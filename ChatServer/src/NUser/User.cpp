@@ -55,7 +55,7 @@ User::OnPacket()
 
 		if (NULL == m_pState)
 		{
-			std::cout << "m_pState is NULL!" << std::endl;
+			std::cout << "WOW. m_pState is NULL!" << std::endl;
 			::BoostAsioNetwork::Static::Instance().GETPACKETPOOL()->READ_DEL(pPacket);
 			continue;
 		}
