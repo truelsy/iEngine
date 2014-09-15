@@ -1,0 +1,34 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+
+import os
+import sys
+import shutil
+
+if (len(sys.argv) != 2) :
+	print "usage : %s protofile" % sys.argv[0]
+	print "ex    : %s a.proto" % sys.argv[0]
+	sys.exit()
+
+proto_file = sys.argv[1]
+
+cmd = "protoc -I=. --cpp_out=. %s" % proto_file
+os.system(cmd)
+
+cmd = "protoc -I=. --python_out=. %s" % proto_file
+os.system(cmd)
+
+src_file = os.path.splitext(proto_file)[0] + ".pb.cc"
+header_file = os.path.splitext(proto_file)[0] + ".pb.h"
+py_file = os.path.splitext(proto_file)[0] + "_pb2.py"
+
+shutil.copy(header_file, "../include")
+shutil.copy(src_file, "../src/NMessage")
+shutil.copy(py_file, "../client")
+
+os.remove(header_file)
+os.remove(src_file)
+os.remove(py_file)
+
+
+

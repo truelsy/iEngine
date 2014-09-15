@@ -1,0 +1,7 @@
+message AuthRequest {
+	required string nickname = 1;
+}
+
+message ChatMessage {
+	required string msg = 1;
+}
