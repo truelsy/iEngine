@@ -59,6 +59,7 @@ DelUser(User * pUser)
 	clsUserList.remove(pUser);
 }
 
+
 void
 Broadcast(User * pUser, const char * message)
 {
