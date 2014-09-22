@@ -11,6 +11,7 @@
 #include <list>
 #include <deque>
 #include <pthread.h>
+#include <iostream>
 #include <boost/asio.hpp>
 #include <boost/enable_shared_from_this.hpp>
 

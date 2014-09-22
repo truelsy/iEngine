@@ -49,7 +49,7 @@ all: ChatServer
 ChatServer: $(OBJS) $(USER_OBJS)
 	@echo 'Building target: $@'
 	@echo 'Invoking: GCC C++ Linker'
-	/usr/bin/g++-4.8 -L../../iEngine/Lib -o "ChatServer" $(OBJS) $(USER_OBJS) $(LIBS)
+	g++ -L../../iEngine/Lib -o "ChatServer" $(OBJS) $(USER_OBJS) $(LIBS)
 	@echo 'Finished building target: $@'
 	@echo ' '
 

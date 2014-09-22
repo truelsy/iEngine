@@ -10,6 +10,7 @@
 
 #include <queue>
 #include <pthread.h>
+#include <iostream>
 
 #include "NHandler/Wrapper.h"
 

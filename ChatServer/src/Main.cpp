@@ -5,6 +5,7 @@
 #include <glog/logging.h>
 
 #include "User.h"
+#include "Checker.h"
 #include "Static.h"
 #include "NState/Static.h"
 #include <Network/Static.h>
@@ -41,6 +42,7 @@ int main()
 
 	SetSignal();
 
+	::ChatServer::Checker			clsChecker;
 	::ChatServer::Static			clsStatic;
 	::ChatServer::NState::Static	clsStateStatic;
 
