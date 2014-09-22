@@ -40,7 +40,7 @@ public:
 private:
 	void	SetUserCountTimer()
 	{
-		pTimer->SetTimer(3 * 1000, std::bind(&Checker::OnTime, this));
+		pTimer->SetTimer(1 * 1000, std::bind(&Checker::OnTime, this));
 	}
 
 private:
