@@ -121,4 +121,18 @@ Packet::Pool::SEND_DEL(Packet * pPacket)
 	pthread_mutex_unlock(&m_SendLock);
 }
 
+
+int
+Packet::Pool::GetSendPacketCount()
+{
+	return clsSendPacketPool.size();
+}
+
+
+int
+Packet::Pool::GetReadPacketCount()
+{
+	return clsReadPacketPool.size();
+}
+
 } /*BoostAsioNetwork*/

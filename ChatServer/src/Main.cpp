@@ -56,6 +56,7 @@ int main()
 
 	clsNetwork.SetListener(::Dispatch::GETHANDLER());
 
+
 	for (int i = 0; i < 1024; i++)
 	{
 		ChatServer::User * pUser = new ChatServer::User;

@@ -20,7 +20,7 @@ public:
 	Checker()
 	{
 		pTimer = new ::NTimer::Timer;
-		SetUserCountTimer();
+		SetPacketCountCheckTimer();
 	}
 
 	~Checker()
@@ -31,14 +31,12 @@ public:
 public:
 	void	OnTime()
 	{
-		auto & clsUserList = Static::Instance().GetUserList();
-		std::cout << "User Count : " << clsUserList.size() << std::endl;
-
-		SetUserCountTimer();
+		std::cout << "SEND PACKET : " << ::BoostAsioNetwork::Static::Instance().GETPACKETPOOL()->GetSendPacketCount() << std::endl;
+		SetPacketCountCheckTimer();
 	}
 
 private:
-	void	SetUserCountTimer()
+	void	SetPacketCountCheckTimer()
 	{
 		pTimer->SetTimer(1 * 1000, std::bind(&Checker::OnTime, this));
 	}

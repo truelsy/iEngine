@@ -34,6 +34,9 @@ public:
 		Packet *	SEND_NEW();
 		void		SEND_DEL(Packet * pPacket);
 
+		int			GetSendPacketCount();
+		int			GetReadPacketCount();
+
 	private:
 		std::list<Packet *>		clsSendPacketPool;
 		std::list<Packet *>		clsReadPacketPool;
