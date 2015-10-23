@@ -36,72 +36,72 @@ void SetSignal()
 	sigaction(SIGPIPE, &sa, NULL);
 }
 
-void Test_Memcached()
-{
-	// SET TEST
-	{
-		::Memcache::Command::Data	clsData;
-		clsData._key		= "KEY_12345";
-		clsData._eAction	= ::Memcache::Command::SET;
-
-		::Memcache::Command::Auto clsAuto(::Memcache::GETCOMMANDPOOL());
-		clsAuto->SetData(clsData);
-
-		clsAuto->GetResultSet().Init(1, 5);
-
-		bool vBool = true;
-		int  vInt = 4486;
-		double vDouble = 123.456;
-		std::string vString = "MyString";
-		uint16_t vUint16 = 12;
-
-		clsAuto->GetResultSet() << vBool << vInt << vDouble << vString.c_str() << vUint16;
-
-		::Memcache::GETSESSION()->Execute(clsAuto);
-		std::cout << "Memcached Set Result : " << clsAuto->GetReturnCode() << std::endl;
-		std::cout << "Memcached Set String : " << clsAuto->GetErrorString() << std::endl;
-	}
-
-	// GET TEST
-	{
-		::Memcache::Command::Data clsData;
-		clsData._key		= "KEY_12345";
-		clsData._eAction	= ::Memcache::Command::GET;
-
-		::Memcache::Command::Auto clsAuto(::Memcache::GETCOMMANDPOOL());
-		clsAuto->SetData(clsData);
-
-		bool bRet = ::Memcache::GETSESSION()->Execute(clsAuto);
-		std::cout << "bRet : " << bRet << std::endl;
-
-		bool vBool;
-		int  vInt;
-		double vDouble;
-		std::string vString;
-		uint16_t vUint16;
-
-		while (clsAuto->GetResultSet().MoreRecord())
-		{
-			vBool	= atoi(clsAuto->GetResultSet().ROW[0]);
-			vInt	= atoi(clsAuto->GetResultSet().ROW[1]);
-			vDouble	= atof(clsAuto->GetResultSet().ROW[2]);
-			vString	= clsAuto->GetResultSet().ROW[3];
-			vUint16	= atoi(clsAuto->GetResultSet().ROW[4]);
-		}
-
-		std::cout << "Memcached Get Result : " << clsAuto->GetReturnCode() << std::endl;
-		std::cout << "Memcached Get String : " << clsAuto->GetErrorString() << std::endl;
-		std::cout << "Memcached Get Bool : " << vBool << std::endl;
-		std::cout << "Memcached Get Int : " << vInt << std::endl;
-		std::cout << "Memcached Get Double : " << vDouble << std::endl;
-		std::cout << "Memcached Get String : " << vString << std::endl;
-		std::cout << "Memcached Get Uint16 : " << vUint16 << std::endl;
-	}
-}
+//void Test_Memcached()
+//{
+//	// SET TEST
+//	{
+//		::Memcache::Command::Data	clsData;
+//		clsData._key		= "KEY_12345";
+//		clsData._eAction	= ::Memcache::Command::SET;
+//
+//		::Memcache::Command::Auto clsAuto(::Memcache::GETCOMMANDPOOL());
+//		clsAuto->SetData(clsData);
+//
+//		clsAuto->GetResultSet().Init(1, 5);
+//
+//		bool vBool = true;
+//		int  vInt = 4486;
+//		double vDouble = 123.456;
+//		std::string vString = "MyString";
+//		uint16_t vUint16 = 12;
+//
+//		clsAuto->GetResultSet() << vBool << vInt << vDouble << vString.c_str() << vUint16;
+//
+//		::Memcache::GETSESSION()->Execute(clsAuto);
+//		std::cout << "Memcached Set Result : " << clsAuto->GetReturnCode() << std::endl;
+//		std::cout << "Memcached Set String : " << clsAuto->GetErrorString() << std::endl;
+//	}
+//
+//	// GET TEST
+//	{
+//		::Memcache::Command::Data clsData;
+//		clsData._key		= "KEY_12345";
+//		clsData._eAction	= ::Memcache::Command::GET;
+//
+//		::Memcache::Command::Auto clsAuto(::Memcache::GETCOMMANDPOOL());
+//		clsAuto->SetData(clsData);
+//
+//		bool bRet = ::Memcache::GETSESSION()->Execute(clsAuto);
+//		std::cout << "bRet : " << bRet << std::endl;
+//
+//		bool vBool;
+//		int  vInt;
+//		double vDouble;
+//		std::string vString;
+//		uint16_t vUint16;
+//
+//		while (clsAuto->GetResultSet().MoreRecord())
+//		{
+//			vBool	= atoi(clsAuto->GetResultSet().ROW[0]);
+//			vInt	= atoi(clsAuto->GetResultSet().ROW[1]);
+//			vDouble	= atof(clsAuto->GetResultSet().ROW[2]);
+//			vString	= clsAuto->GetResultSet().ROW[3];
+//			vUint16	= atoi(clsAuto->GetResultSet().ROW[4]);
+//		}
+//
+//		std::cout << "Memcached Get Result : " << clsAuto->GetReturnCode() << std::endl;
+//		std::cout << "Memcached Get String : " << clsAuto->GetErrorString() << std::endl;
+//		std::cout << "Memcached Get Bool : " << vBool << std::endl;
+//		std::cout << "Memcached Get Int : " << vInt << std::endl;
+//		std::cout << "Memcached Get Double : " << vDouble << std::endl;
+//		std::cout << "Memcached Get String : " << vString << std::endl;
+//		std::cout << "Memcached Get Uint16 : " << vUint16 << std::endl;
+//	}
+//}
 
 int main()
 {
-	google::SetLogDestination(google::GLOG_INFO, "/home/mega/workspace_kor/TestServer/Logs");
+	google::SetLogDestination(google::GLOG_INFO, "../Logs");
 	google::InitGoogleLogging("Log");
 
 	SetSignal();
@@ -129,11 +129,11 @@ int main()
 
 	clsNetwork.Start();
 
-	::Memcache::Static	clsMemcache;
-	bool bMemcached = ::Memcache::GETSESSION()->Initialize("127.0.0.1:11211");
-	std::cout << "Memcached Connect : " << bMemcached << std::endl;
-
-	Test_Memcached();
+//	::Memcache::Static	clsMemcache;
+//	bool bMemcached = ::Memcache::GETSESSION()->Initialize("127.0.0.1:11211");
+//	std::cout << "Memcached Connect : " << bMemcached << std::endl;
+//
+//	Test_Memcached();
 
 	std::mutex	__mutex__;
 	std::unique_lock<std::mutex> lock(__mutex__);
