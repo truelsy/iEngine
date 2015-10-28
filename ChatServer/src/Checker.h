@@ -38,7 +38,7 @@ public:
 private:
 	void	SetPacketCountCheckTimer()
 	{
-		pTimer->SetTimer(1 * 1000, std::bind(&Checker::OnTime, this));
+		pTimer->SetTimer(60 * 1000, std::bind(&Checker::OnTime, this));
 	}
 
 private:
