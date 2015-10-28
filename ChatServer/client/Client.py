@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+# -*- coding: utf-8 -*-
 
 import sys
 import time
@@ -40,7 +41,7 @@ def printMessage(sock) :
 
 def main() :
 	sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-	sock.connect(('', 54486))
+	sock.connect(('104.155.213.172', 54486))
 
 	# Auth
 	sys.stdout.write("Input your name : ")
@@ -63,12 +64,14 @@ def main() :
 			if (input == sys.stdin) :
 				line = sys.stdin.readline().strip()
 				if (not line) : continue
-				if (line.strip().lower() == "bye") :
+
+				line = line.strip()
+				if (line.lower() == "bye") :
 					term = True
 					break
 
 				chat = ChatMessage_pb2.ChatMessage()
-				chat.msg = line.strip()
+				chat.msg = unicode(line, 'utf-8')
 				sendPacket(CMD_CHAT, sock, chat)
 			elif (input == sock) :
 				printMessage(sock)
