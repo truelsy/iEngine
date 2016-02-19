@@ -37,6 +37,7 @@ public:
 private:
 	NState::State *	m_pState;
 	std::string		m_nickName;
+	int				m_CGCIIPacketCount;
 };
 
 } /*ChatServer*/

@@ -19,7 +19,7 @@
 
 namespace BoostAsioNetwork {
 
-#define MAX_BUFFER_SIZE	(MAX_PACKET_LEN * 2)
+#define MAX_BUFFER_SIZE	(MAX_PACKET_LEN * 10)
 
 class Session // : public boost::enable_shared_from_this<Session>
 {

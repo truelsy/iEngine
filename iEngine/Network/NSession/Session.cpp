@@ -57,11 +57,11 @@ Session::Close()
 	{
 		std::cout << "[Socket Close]" << std::endl;
 
-		try {
-			m_Socket.shutdown(boost::asio::ip::tcp::socket::shutdown_both);
-		} catch (std::exception & e) {
-			std::cout << "Close Exception : " << e.what() << std::endl;
-		}
+		//try {
+		//	m_Socket.shutdown(boost::asio::ip::tcp::socket::shutdown_both);
+		//} catch (std::exception & e) {
+		//	std::cout << "Close Exception : " << e.what() << std::endl;
+		//}
 
 		m_Socket.close();
 	}
@@ -71,14 +71,23 @@ int
 Session::GetHeaderSize() const
 {
 	// identify(1byte) + size(2byte) + option flag(1byte) + command(2byte)
+#ifdef CGCII_BMT
+	return 4;
+#else
 	return 1 + 2 + 1 + 2;
+#endif
 }
 
 int
 Session::GetBodySize(char * pBuf) const
 {
+#ifdef CGCII_BMT
+	int iBodySize = *((int *)(pBuf));
+	return iBodySize;
+#else
 	short nBodySize = *((short *)(pBuf + 1));
 	return static_cast<int>(nBodySize);
+#endif
 }
 
 void
@@ -97,7 +106,7 @@ Session::HandleRead()
 void
 Session::OnRead(const boost::system::error_code & error, size_t bytes_transferred)
 {
-	std::cout << "OnRead error code : " << error << std::endl;
+	//std::cout << "OnRead error code : " << error << std::endl;
 
 	// Socket Close
 	if (0 >= bytes_transferred || error)
@@ -115,7 +124,7 @@ Session::OnRead(const boost::system::error_code & error, size_t bytes_transferre
 		return;
 	}
 
-	std::cout << "Read : " << bytes_transferred << std::endl;
+	//std::cout << "Read : " << bytes_transferred << std::endl;
 
 	int nTotalReadSize = bytes_transferred + m_nBufCursor;
 
@@ -134,7 +143,12 @@ Session::OnRead(const boost::system::error_code & error, size_t bytes_transferre
 	while (nTotalReadSize > 0)
 	{
 		int nBodySize = this->GetBodySize(pBuf);
+
+#ifdef CGCII_BMT
+		int nReadSize = nHeaderSize + (nBodySize - 4);
+#else
 		int nReadSize = nHeaderSize + nBodySize;
+#endif
 
 		if (nReadSize >= MAX_BUFFER_SIZE)
 		{
@@ -203,7 +217,7 @@ Session::HandleWrite(Packet * pPacket)
 void
 Session::OnWrite(const boost::system::error_code & error, Packet * pPacket)
 {
-	std::cout << "OnWrite error code : " << error << std::endl;
+	//std::cout << "OnWrite error code : " << error << std::endl;
 
 	Static::Instance().GETPACKETPOOL()->SEND_DEL(pPacket);
 }

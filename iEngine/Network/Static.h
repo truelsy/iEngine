@@ -19,6 +19,8 @@
 #include "IListener.h"
 #include "NBase/Single.h"
 
+#define CGCII_BMT
+
 namespace BoostAsioNetwork {
 
 class Static : public NBase::Single<Static>

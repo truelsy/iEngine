@@ -23,10 +23,10 @@ C_UPPER_DEPS :=
 
 # Every subdirectory with source files must be described here
 SUBDIRS := \
-src/NUser \
-src/NState \
-src/NMessage \
-src/NLogic \
-src/NCommand \
 src \
+src/NCommand \
+src/NLogic \
+src/NMessage \
+src/NState \
+src/NUser \
 

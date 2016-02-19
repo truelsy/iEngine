@@ -9,11 +9,13 @@
 #include "../NState/Static.h"
 #include "../NLogic/Function.h"
 
+
 namespace ChatServer {
 
 User::User() : m_pState(NULL)
 {
 	SetState(NState::Static::Instance().AUTHSTATE());
+	m_CGCIIPacketCount = 0;
 }
 
 User::~User()
@@ -23,7 +25,6 @@ User::~User()
 void
 User::OnPacket()
 {
-	uint16_t msgType;
 	::BoostAsioNetwork::Packet * pPacket = NULL;
 
 	while (true)
@@ -34,7 +35,7 @@ User::OnPacket()
 
 		if (pPacket->GetPacketType() == ::BoostAsioNetwork::Packet::PacketType::OPEN)
 		{
-			std::cout << "Session Open ~" << std::endl;
+			//std::cout << "Session Open ~" << std::endl;
 
 			::BoostAsioNetwork::Static::Instance().GETPACKETPOOL()->READ_DEL(pPacket);
 			continue;
@@ -42,7 +43,7 @@ User::OnPacket()
 
 		if (pPacket->GetPacketType() == ::BoostAsioNetwork::Packet::PacketType::CLOSE)
 		{
-			std::cout << "Session Close ~" << std::endl;
+			//std::cout << "Session Close ~" << std::endl;
 			NLogic::DelUser(this);
 
 			this->Close();
@@ -60,7 +61,19 @@ User::OnPacket()
 			continue;
 		}
 
-		msgType = pPacket->GetCommand();
+#ifdef CGCII_BMT
+		::BoostAsioNetwork::Packet * pAck = ::BoostAsioNetwork::Static::Instance().GETPACKETPOOL()->SEND_NEW();
+		memcpy(pAck->GetBuf().data(), pPacket->GetBuf().data(), pPacket->GetBodySize());
+		pAck->MakePacket(0x00, pAck->GetBodySize());
+		SendPacket(pAck);
+
+		//m_CGCIIPacketCount++;
+		//if (m_CGCIIPacketCount % 100 == 0)
+		//{
+		//	std::cout << "PROC COUNT : " << m_CGCIIPacketCount << std::endl;
+		//}
+#else
+		uint16_t msgType = pPacket->GetCommand();
 
 		NState::State::Command pCommand = m_pState->GetCommand(msgType);
 		if (NULL == pCommand)
@@ -70,6 +83,7 @@ User::OnPacket()
 		}
 
 		pCommand(this, pPacket);
+#endif
 
 		// 패킷 반환
 		::BoostAsioNetwork::Static::Instance().GETPACKETPOOL()->READ_DEL(pPacket);

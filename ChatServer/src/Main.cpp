@@ -11,6 +11,7 @@
 #include <Network/Static.h>
 #include <Dispatch/Static.h>
 #include <Memcache/Static.h>
+#include <NetworkV2/Static.h>
 
 std::condition_variable m_Condition;
 
@@ -113,19 +114,20 @@ int main()
 	::Dispatch::Static			clsDispatch;
 	clsDispatch.Initialize();
 
-	int nThreadCount = 2;
-	int nSendPacketCount = 10000;
+	int nThreadCount = 4;
+	int nSendPacketCount = 100000;
 	int nReadPacketCount = 10000;
 	::BoostAsioNetwork::Static	clsNetwork(nThreadCount, nSendPacketCount, nReadPacketCount);
 
 	clsNetwork.SetListener(::Dispatch::GETHANDLER());
 
-
-	for (int i = 0; i < 1024; i++)
+	const int iSessionCount = 5000;
+	for (int i = 0; i < iSessionCount; i++)
 	{
 		ChatServer::User * pUser = new ChatServer::User;
 		clsNetwork.GETSESSIONPOOL()->POST(pUser);
 	}
+
 
 	clsNetwork.Start();
 

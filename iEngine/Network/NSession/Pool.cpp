@@ -26,7 +26,7 @@ Session::Pool::~Pool()
 Session *
 Session::Pool::NEW()
 {
-	std::cout << "NEW Before Session Count : " << clsSessionList.size() << std::endl;
+	//std::cout << "NEW Before Session Count : " << clsSessionList.size() << std::endl;
 
 	Session * pSession = NULL;
 	{
@@ -43,7 +43,7 @@ Session::Pool::NEW()
 		pthread_mutex_unlock(&m_Lock);
 	}
 
-	std::cout << "NEW After  Session Count : " << clsSessionList.size() << std::endl;
+	//std::cout << "NEW After  Session Count : " << clsSessionList.size() << std::endl;
 
 	return pSession;
 }
@@ -53,14 +53,18 @@ Session::Pool::DEL(Session * pSession)
 {
 	pSession->Finalize();
 
-	std::cout << "DEL Before Session Count : " << clsSessionList.size() << std::endl;
-
 	pthread_mutex_lock(&m_Lock);
+
+	//std::cout << "DEL Before Session Count : " << clsSessionList.size() << std::endl;
+
 	clsSessionList.push_back(pSession);
+
+	//std::cout << "DEL After  Session Count : " << clsSessionList.size() << std::endl;
+	std::cout << "Remain SessionCount(" << clsSessionList.size() << ")" << std::endl;
+
 	pthread_cond_signal(&m_Cond);
 	pthread_mutex_unlock(&m_Lock);
 
-	std::cout << "DEL After  Session Count : " << clsSessionList.size() << std::endl;
 }
 
 void

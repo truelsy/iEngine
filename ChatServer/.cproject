@@ -43,6 +43,7 @@
 							<tool command="g++" id="cdt.managedbuild.tool.gnu.cpp.linker.exe.debug.359109473" name="GCC C++ Linker" superClass="cdt.managedbuild.tool.gnu.cpp.linker.exe.debug">
 								<option id="gnu.cpp.link.option.libs.912651595" name="Libraries (-l)" superClass="gnu.cpp.link.option.libs" valueType="libs">
 									<listOptionValue builtIn="false" value="Dispatch"/>
+									<listOptionValue builtIn="false" value="NetworkV2"/>
 									<listOptionValue builtIn="false" value="Network"/>
 									<listOptionValue builtIn="false" value="Timer"/>
 									<listOptionValue builtIn="false" value="boost_thread"/>

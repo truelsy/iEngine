@@ -8,6 +8,7 @@
 #include <string.h>
 
 #include "../Packet.h"
+#include "../Static.h"
 
 namespace BoostAsioNetwork {
 
@@ -30,8 +31,10 @@ Packet::Initialize(bool bSendPacket)
 	m_Buf.fill(0x00);
 	m_PacketType = PacketType::NONE;
 
+#ifndef CGCII_BMT
 	if (true == bSendPacket)
 		m_nOffSet = 6;	// HEADER SIZE
+#endif
 }
 
 void
@@ -46,10 +49,12 @@ Packet::MakePacket(uint16_t command)
 void
 Packet::MakePacket(uint16_t command, uint16_t size)
 {
+#ifndef CGCII_BMT
 	m_Buf[0] = 0xff;
 	memcpy(&m_Buf[1], &size, 2);
 	m_Buf[3] = 0x01;
 	memcpy(&m_Buf[4], &command, 2);
+#endif
 
 	m_nOffSet += size;
 }
@@ -69,7 +74,12 @@ Packet::GetCommand()
 uint16_t
 Packet::GetBodySize()
 {
+#ifdef CGCII_BMT
+	int iBodySize = *((int *)(m_Buf.data()));
+	return iBodySize;
+#else
 	return *((unsigned short *)(m_Buf.data() + 1));
+#endif
 }
 
 char *
