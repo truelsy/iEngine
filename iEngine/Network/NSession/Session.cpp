@@ -207,7 +207,7 @@ void
 Session::HandleWrite(Packet * pPacket)
 {
 	boost::asio::async_write(m_Socket,
-			boost::asio::buffer(pPacket->GetBuf(), pPacket->GetOffSet()),
+			boost::asio::buffer(pPacket->GetBuf().data(), pPacket->GetOffSet()),
 			boost::bind(&Session::OnWrite, this,
 				boost::asio::placeholders::error,
 				pPacket)
