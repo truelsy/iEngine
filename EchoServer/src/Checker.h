@@ -20,6 +20,7 @@ public:
 	enum class TimerID {
 		__NONE__,
 		POOL_CHECK,
+		TEST_TIMER,
 		__MAX__,
 	};
 
@@ -28,6 +29,9 @@ public:
 	{
 		_poolCheckTimer = std::make_shared<::Timer::TimerHandler>();
 		_poolCheckTimer->SetTimer(1000 * 10, (int)TimerID::POOL_CHECK, std::bind(&Checker::OnTime, this, std::placeholders::_1, std::placeholders::_2));
+
+		_testTimer = std::make_shared<::Timer::TimerHandler>();
+		_testTimer->SetTimer(1000 * 1, (int)TimerID::TEST_TIMER, std::bind(&Checker::OnTime, this, std::placeholders::_1, std::placeholders::_2));
 	};
 
 	~Checker()
@@ -50,11 +54,21 @@ public:
 				_poolCheckTimer->ResumeTimer();
 			}
 			break;
+		case (int)TimerID::TEST_TIMER:
+			{
+				LOG(INFO) << __FUNCTION__ << " : [Test Timer]";
+
+				// Timer 재등록
+				//_testTimer->ResumeTimer();
+				_testTimer->KillTimer();
+			}
+			break;
 		}
 	}
 
 private:
 	std::shared_ptr<::Timer::TimerHandler> _poolCheckTimer;
+	std::shared_ptr<::Timer::TimerHandler> _testTimer;
 };
 
 } /*Server*/

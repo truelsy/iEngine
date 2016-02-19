@@ -42,12 +42,6 @@ public:
 		virtual void OnClose() {}
 		virtual void OnMessage() {}
 		virtual void OnConnectFail(boost::system::error_code& ec) {}
-
-		virtual int get_head_length() { return 4; }
-		virtual int get_body_length(char * pBuffer) {
-			short size = static_cast<short>(* pBuffer);
-			return size;
-		}
 	};
 
 public:

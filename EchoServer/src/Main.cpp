@@ -5,6 +5,7 @@
 #include <glog/logging.h>
 
 #include <NetworkV2/Static.h>
+#include <Timer/Static.h>
 
 #include "User.h"
 #include "Checker.h"
@@ -61,6 +62,8 @@ int main()
 	::Network::Static	clsNetwork(threadCount, sendPacketCount, readPacketCount, sessionCount);
 	clsNetwork.SetAcceptEventFunc(std::bind(OnAcceptEvent, std::placeholders::_1, std::placeholders::_2));
 	clsNetwork.Listen(54486);
+
+	::Timer::Static		clsTimer;
 
 	::Server::Static	clsStatic(sessionCount);
 	::Server::Checker	clsChecker;
