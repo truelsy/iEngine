@@ -11,11 +11,11 @@
 #include <thread>
 #include <boost/asio.hpp>
 #include <boost/bind.hpp>
-#include "Single.h"
+#include "../NetworkV2/NBase/Single.h"
 
 namespace Timer {
 
-class Static : public Single<Static>
+class Static : public ::Network::NBase::Single<Static>
 {
 public:
 	Static() : _work(_ioService)
