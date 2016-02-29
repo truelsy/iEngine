@@ -10,6 +10,7 @@
 #include "User.h"
 #include "Checker.h"
 #include "Static.h"
+#include "Macro.h"
 
 std::condition_variable m_Condition;
 
@@ -69,6 +70,10 @@ int main()
 	::Server::Checker	clsChecker;
 
 	LOG(INFO) << __PRETTY_FUNCTION__ << " : SERVER START";
+	INFO("[INFO] TEST");
+	INFOC(FG_GREEN, "[INFOC] COLOR");
+	WARN("[WARN] TEST. Args(%d)", 100);
+	ERROR("[ERROR] TEST. Args(%d), Args2(%d)", 100, 200);
 
 	std::mutex	__mutex__;
 	std::unique_lock<std::mutex> lock(__mutex__);
